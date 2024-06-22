@@ -11,12 +11,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
 @Table(name = "course")
@@ -36,5 +39,14 @@ public class Course extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(nullable = false)
-  private Member instructorId; // TODO: 네이밍 고민
+  private Member instructorId; // TODO: 네이밍 고민 & @CreatedBy 사용할지 생각
+
+  public static Course create(String title, String description, int capacity, BigDecimal price) {
+    return Course.builder()
+        .title(title)
+        .description(description)
+        .capacity(capacity)
+        .price(price)
+        .build();
+  }
 }

@@ -22,7 +22,8 @@ public class SecurityConfig {
         .httpBasic(AbstractHttpConfigurer::disable)
         .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(PathRequest.toH2Console()).permitAll()
+            .requestMatchers("/h2-console/**").permitAll()
+            .requestMatchers("/api/v1/courses").permitAll()
             .anyRequest().authenticated());
 
     return http.build();
