@@ -38,8 +38,8 @@ public class Course extends BaseTimeEntity {
   private BigDecimal price;
 
   @ManyToOne
-  @JoinColumn
-  private Member instructorId; // TODO: 네이밍 고민 & @CreatedBy 사용할지 생각
+  @JoinColumn(name = "instructor_id")
+  private Member instructor;
 
   public static Course create(String title, String description, int capacity, BigDecimal price) {
     return Course.builder()
@@ -48,5 +48,9 @@ public class Course extends BaseTimeEntity {
         .capacity(capacity)
         .price(price)
         .build();
+  }
+
+  public void addInstructor(Member instructor) {
+    this.instructor = instructor;
   }
 }
