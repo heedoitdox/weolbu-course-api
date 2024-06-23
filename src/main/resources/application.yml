@@ -25,3 +25,8 @@ jpa:
     properties:
       hibernate:
         format_sql: true
+
+token:
+  signing:
+    key: qhSVQdOL2K64WVAZyxhkhZ3ZtiSwr+rSCEYNMC+gP6M=
+    expiration-time: 86400000 # 1일
