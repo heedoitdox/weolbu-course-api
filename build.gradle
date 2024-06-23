@@ -2,10 +2,19 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.5'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'io.heedoitdox'
 version = '0.0.1-SNAPSHOT'
+
+configurations {
+    asciidoctorExt
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
 
 java {
     toolchain {
@@ -34,8 +43,46 @@ dependencies {
     /* fixture-monkey */
     testImplementation 'com.navercorp.fixturemonkey:fixture-monkey-starter:1.0.16'
     testImplementation 'com.navercorp.fixturemonkey:fixture-monkey-jackson:1.0.16'
+
+    /* RestDocs */
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+tasks.named('testClasses') { // (1)
+    doFirst {
+        delete file('build/docs/asciidoc')
+    }
 }
 
 tasks.named('test') {
+    outputs.dir snippetsDir
     useJUnitPlatform()
+    finalizedBy asciidoctor
+}
+
+tasks.named('asciidoctor') {
+    dependsOn test
+    configurations 'asciidoctorExt'
+    inputs.dir snippetsDir
+    finalizedBy copyDocument
+    doFirst {
+        delete file('src/main/resources/static/docs')
+    }
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file('build/docs/asciidoc')
+    into file('src/main/resources/static/docs')
+}
+
+bootJar {
+    dependsOn asciidoctor
+    doFirst {
+        delete file('static/docs')
+    }
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }

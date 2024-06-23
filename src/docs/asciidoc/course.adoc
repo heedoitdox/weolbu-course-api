@@ -1,0 +1,26 @@
+= Coonect API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 강의 관련 API
+
+=== 1. 강의 개설
+
+==== 요청
+
+include::{snippets}/courses-create-success/http-request.adoc[]
+
+==== 요청 필드
+
+include::{snippets}/courses-create-success/request-fields.adoc[]
+
+// ==== 응답
+//
+// include::{snippets/courses-create-success/http-response.adoc[]
+//
+// ==== 응답 필드
+//
+// include::{snippets}/courses-create-success/response-fields.adoc[]
