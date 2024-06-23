@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS courses
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     title       VARCHAR(100) NOT NULL,
     description VARCHAR(100) NOT NULL,
-    capacity    int,
-    price       decimal,
+    capacity    int NOT NULL,
+    price       decimal NOT NULL,
     created_by  bigint
 );
 

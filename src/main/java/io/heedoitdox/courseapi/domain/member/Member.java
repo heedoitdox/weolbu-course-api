@@ -1,6 +1,6 @@
 package io.heedoitdox.courseapi.domain.member;
 
-import io.heedoitdox.courseapi.domain.BaseEntity;
+import io.heedoitdox.courseapi.domain.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "members")
-public class Member extends BaseEntity {
+public class Member extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)

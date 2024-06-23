@@ -1,6 +1,6 @@
 package io.heedoitdox.courseapi.domain.course;
 
-import io.heedoitdox.courseapi.domain.BaseEntity;
+import io.heedoitdox.courseapi.domain.BaseTimeEntity;
 import io.heedoitdox.courseapi.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 @Builder(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
-@Table(name = "course")
-public class Course extends BaseEntity {
+@Table(name = "courses")
+public class Course extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -38,7 +38,7 @@ public class Course extends BaseEntity {
   private BigDecimal price;
 
   @ManyToOne
-  @JoinColumn(nullable = false)
+  @JoinColumn
   private Member instructorId; // TODO: 네이밍 고민 & @CreatedBy 사용할지 생각
 
   public static Course create(String title, String description, int capacity, BigDecimal price) {
