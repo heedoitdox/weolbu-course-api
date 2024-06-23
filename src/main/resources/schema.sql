@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS courses
     created_by  bigint
 );
 
-DROP TABLE IF EXISTS course_registraions;
-CREATE TABLE IF NOT EXISTS course_registraions
+DROP TABLE IF EXISTS course_registrations;
+CREATE TABLE IF NOT EXISTS course_registrations
 (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id       bigint NOT NULL,
