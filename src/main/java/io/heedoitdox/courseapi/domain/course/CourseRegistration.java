@@ -10,10 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -27,9 +30,16 @@ public class CourseRegistration extends BaseTimeEntity {
 
   @ManyToOne
   @JoinColumn(name = "member_id", nullable = false)
-  private Member member;
+  private Member applicant;
 
   @ManyToOne
   @JoinColumn(name = "course_id", nullable = false)
   private Course course;
+
+  public static CourseRegistration create(Course course, Member applicant) {
+    return CourseRegistration.builder()
+        .course(course)
+        .applicant(applicant)
+        .build();
+  }
 }
