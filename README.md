@@ -31,6 +31,10 @@ cd <project-name>
 ```bash
 ./gradlew bootRun
 ```
+5. 빠른 api 호출
+```bash
+intellij IDE 에서 /src/http/api.http 파일 오픈 후 호출 
+```
 
 ## 4. 사용 라이브러리
 - `spring-boot-starter-data-jpa`
