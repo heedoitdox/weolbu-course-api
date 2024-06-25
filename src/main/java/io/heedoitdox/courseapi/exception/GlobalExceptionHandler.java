@@ -22,6 +22,13 @@ public class GlobalExceptionHandler {
     return makeErrorResponse(e, ErrorCode.INVALID_PARAMETER);
   }
 
+  @ExceptionHandler(BadRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleBadRequestException(BadRequestException e) {
+    log.warn("handleBadRequestException: ", e);
+    return makeErrorResponse(e.getErrorCode());
+  }
+
   @ExceptionHandler(UnauthorizedException.class)
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public ErrorResponse handleUnauthorizedException(UnauthorizedException e) {
@@ -36,12 +43,14 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(UnprocessableException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ErrorResponse handleUnprocessableException(UnprocessableException e) {
     log.error("UnprocessableException: ", e);
     return makeErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(RuntimeException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ErrorResponse handleRuntimeException(RuntimeException e) {
     log.error("RuntimeException: ", e);
     return makeErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
