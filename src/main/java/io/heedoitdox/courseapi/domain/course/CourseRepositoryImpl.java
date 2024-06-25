@@ -1,16 +1,14 @@
 package io.heedoitdox.courseapi.domain.course;
 
 import static io.heedoitdox.courseapi.domain.course.QCourse.course;
-import static io.heedoitdox.courseapi.domain.course.QCourseRegistration.courseRegistration;
+import static io.heedoitdox.courseapi.domain.member.QMember.member;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.heedoitdox.courseapi.application.course.CourseListResponse;
+import io.heedoitdox.courseapi.application.course.CourseSummary;
 import io.heedoitdox.courseapi.application.course.OrderCondition;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +26,21 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
   private final JPAQueryFactory factory;
 
   @Override
-  public Page<CourseListResponse> findAllBySort(List<OrderCondition> orderConditionList, Pageable pageable) {
+  public Page<CourseSummary> findAllBySort(List<OrderCondition> orderConditionList, Pageable pageable) {
 
-    List<CourseListResponse> fetch = factory
+    List<CourseSummary> fetch = factory
         .select(Projections.constructor(
-            CourseListResponse.class,
+            CourseSummary.class,
             course.id,
             course.title,
             course.capacity,
             course.price,
             course.registeredCount,
+            course.registeredRate,
+            member.name,
             course.createdAt
         )).from(course)
-        .leftJoin(course).on(courseRegistration.course.id.eq(course.id))
+        .leftJoin(course.instructor, member)
         .orderBy(getOrderSpecifiers(orderConditionList))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
@@ -66,11 +66,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
         // 신청자 많은 순
         case REGISTERED_COUNT_DESC -> orderSpecifiers.add(new OrderSpecifier(Order.DESC, course.registeredCount));
         // 신청률 높은 순
-        case REGISTRATION_RATE_DESC -> {
-          NumberExpression<Double> registeredRateDividedCapacity =
-              Expressions.numberTemplate(Double.class, "({0} / {1})", course.registeredCount, course.capacity);
-          orderSpecifiers.add(new OrderSpecifier<>(Order.DESC, registeredRateDividedCapacity));
-        }
+        case REGISTRATION_RATE_DESC -> orderSpecifiers.add(new OrderSpecifier(Order.DESC, course.registeredRate));
       }
     }
 

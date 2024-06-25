@@ -1,4 +1,4 @@
-package io.heedoitdox.courseapi.application;
+package io.heedoitdox.courseapi.application.course;
 
 import io.heedoitdox.courseapi.domain.course.Course;
 import io.heedoitdox.courseapi.support.StringUtil;
@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 public record CreateCourseRequest(
     @NotBlank String title,
-    String description,
     @NotNull int capacity,
     @NotBlank String price
 ) {
@@ -16,6 +15,6 @@ public record CreateCourseRequest(
   public Course toEntity() {
     BigDecimal priceBigDecimal = new BigDecimal(StringUtil.removeCommas(price));
 
-    return Course.create(title, description, capacity, priceBigDecimal);
+    return Course.create(title, capacity, priceBigDecimal);
   }
 }

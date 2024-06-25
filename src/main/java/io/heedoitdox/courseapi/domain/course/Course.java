@@ -2,6 +2,8 @@ package io.heedoitdox.courseapi.domain.course;
 
 import io.heedoitdox.courseapi.domain.BaseTimeEntity;
 import io.heedoitdox.courseapi.domain.member.Member;
+import io.heedoitdox.courseapi.exception.UnprocessableException;
+import io.heedoitdox.courseapi.support.BigDecimalUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +40,7 @@ public class Course extends BaseTimeEntity {
 
   private Integer registeredCount;
 
-  private Double registeredRate;
+  private BigDecimal registeredRate;
 
   @Column(nullable = false)
   private BigDecimal price;
@@ -55,7 +57,7 @@ public class Course extends BaseTimeEntity {
         .title(title)
         .capacity(capacity)
         .registeredCount(0)
-        .registeredRate(0.0)
+        .registeredRate(BigDecimal.ZERO)
         .price(price)
         .build();
   }
@@ -65,10 +67,16 @@ public class Course extends BaseTimeEntity {
   }
 
   public void register() {
-    if (this.registeredCount + 1 > this.capacity) {
-      throw new RuntimeException();
+    if (!canRegister()) {
+      throw new UnprocessableException("요청 가능한 수를 초과했어요");
     }
 
     this.registeredCount = this.registeredCount + 1;
+    this.registeredRate =
+        BigDecimalUtil.RoundToTwoDecimalPlace(new BigDecimal(this.registeredCount / (double) this.capacity));
+  }
+
+  private boolean canRegister() {
+    return this.registeredCount + 1 <= this.capacity;
   }
 }

@@ -2,6 +2,7 @@ package io.heedoitdox.courseapi.ui;
 
 import io.heedoitdox.courseapi.application.course.CourseListRequest;
 import io.heedoitdox.courseapi.application.course.CourseListResponse;
+import io.heedoitdox.courseapi.application.course.CourseSummary;
 import io.heedoitdox.courseapi.application.course.CourseRegisterRequest;
 import io.heedoitdox.courseapi.application.course.CourseService;
 import io.heedoitdox.courseapi.application.course.CreateCourseRequest;
