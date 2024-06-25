@@ -9,7 +9,7 @@ public class DuplicatedKeyException extends RuntimeException{
 
   public DuplicatedKeyException(String message) {
     super(message);
-    this.errorCode = ErrorCode.UNAUTHORIZED;
+    this.errorCode = ErrorCode.CONFLICT;
     this.message = message;
   }
 }
