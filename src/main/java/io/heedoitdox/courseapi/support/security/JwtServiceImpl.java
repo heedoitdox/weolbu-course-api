@@ -9,8 +9,10 @@ import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +33,13 @@ public class JwtServiceImpl implements JwtService {
 
   @Override
   public String generateToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails);
+    HashMap<String, Object> claims = new HashMap<>();
+    List<String> authorities = userDetails.getAuthorities().stream()
+        .map(GrantedAuthority::getAuthority)
+        .toList();
+    claims.put("authorities", authorities);
+
+    return generateToken(claims, userDetails);
   }
 
   @Override

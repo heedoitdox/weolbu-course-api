@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -35,8 +36,7 @@ public class SecurityConfig {
         .authenticationProvider(authenticationProvider()).addFilterBefore(
             jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/h2-console/**", "/error").permitAll()
-            .requestMatchers("/api/v1/signup", "/api/v1/login").permitAll()
+            .requestMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().authenticated());
 
     return http.build();
@@ -48,7 +48,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public AuthenticationProvider authenticationProvider() {
+  public DaoAuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userService.userDetailsService());
     authProvider.setPasswordEncoder(passwordEncoder());
@@ -59,4 +59,10 @@ public class SecurityConfig {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
     return config.getAuthenticationManager();
   }
+
+  private static final String[] AUTH_WHITELIST = {
+      "/h2-console/**",
+      "/error",
+      "/api/v1/auth/**"
+  };
 }
