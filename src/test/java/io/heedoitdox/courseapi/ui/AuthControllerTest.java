@@ -12,22 +12,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.heedoitdox.courseapi.application.auth.AuthService;
 import io.heedoitdox.courseapi.application.auth.JwtAuthenticationResponse;
 import io.heedoitdox.courseapi.application.auth.LoginRequest;
 import io.heedoitdox.courseapi.application.auth.SignupRequest;
-import io.heedoitdox.courseapi.application.auth.UserServiceImpl;
 import io.heedoitdox.courseapi.config.FixtureMonkeyUtil;
 import io.heedoitdox.courseapi.domain.member.MemberType;
-import io.heedoitdox.courseapi.support.security.JwtAuthenticationFilter;
-import io.heedoitdox.courseapi.support.security.JwtService;
-import io.heedoitdox.courseapi.support.security.JwtServiceImpl;
-import jakarta.persistence.ManyToOne;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -57,13 +50,13 @@ class AuthControllerTest extends AbstractControllerTest {
           .set("email", "binzzang810@gmail.com")
           .set("password", "1234")
           .set("name", "윤영빈")
-          .set("phone", "01045609218")
+          .set("phone", "010-4560-9218")
           .set("memberType", MemberType.INSTRUCTOR)
           .sample();
 
       // when
       ResultActions result = mockMvc.perform(
-          post("/api/v1/signup")
+          post("/api/v1/auth/signup")
               .characterEncoding("UTF-8")
               .content(objectMapper.writeValueAsString(request))
               .contentType(MediaType.APPLICATION_JSON)
@@ -101,7 +94,7 @@ class AuthControllerTest extends AbstractControllerTest {
 
       // when
       ResultActions result = mockMvc.perform(
-          post("/api/v1/login")
+          post("/api/v1/auth/login")
               .characterEncoding("UTF-8")
               .content(objectMapper.writeValueAsString(request))
               .contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +103,7 @@ class AuthControllerTest extends AbstractControllerTest {
       // then
       result.andExpect(status().isOk())
           .andDo(print())
-          .andDo(document("member-create-success",
+          .andDo(document("login-success",
               requestFields(
                   attributes(key("title").value("Request Fields")),
                   fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
