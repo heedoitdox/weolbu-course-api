@@ -1,5 +1,7 @@
 package io.heedoitdox.courseapi.application.course;
 
+import io.heedoitdox.courseapi.exception.ApiErrorException;
+import io.heedoitdox.courseapi.exception.ErrorCode;
 import java.util.List;
 
 public record CourseRegisterRequest(
@@ -8,11 +10,7 @@ public record CourseRegisterRequest(
 
   public CourseRegisterRequest {
     if(courseIds == null || courseIds.isEmpty()) {
-      throw new IllegalArgumentException("courseIds cannot be null or empty");
-    }
-
-    if(courseIds.size() > 20) {
-      throw new IllegalArgumentException("courseIds cannot contain more than 20 elements");
+      throw new ApiErrorException(ErrorCode.BAD_REQUEST, "강의 ID 는 최소 1개 이상 존재해야 해요");
     }
   }
 }

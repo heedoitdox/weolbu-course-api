@@ -8,13 +8,13 @@ public class UnprocessableException extends RuntimeException{
   private final String message;
 
   public UnprocessableException() {
-    this.errorCode = ErrorCode.UNAUTHORIZED;
-    this.message = ErrorCode.UNAUTHORIZED.getMessage();
+    this.errorCode = ErrorCode.UNPROCESSABLE_ENTITY;
+    this.message = ErrorCode.UNPROCESSABLE_ENTITY.getMessage();
   }
 
   public UnprocessableException(String message) {
     super(message);
-    this.errorCode = ErrorCode.UNAUTHORIZED;
+    this.errorCode = ErrorCode.UNPROCESSABLE_ENTITY;
     this.message = message;
   }
 }

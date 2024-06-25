@@ -1,0 +1,156 @@
+= Coonect API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 공통
+===== 에러 코드
+|===
+|errorCode|statusCode|errorCategory|description
+
+|`+INVALID_PARAMETER+`
+|400
+|BAD_REQUEST
+|요청 바디, 파라미터, 쿼리의 검증에 통과하지 못한 경우
+|`+UNAUTHORIZED+`
+|401
+|UNAUTHORIZED
+|유효하지 않은 토큰 또는 올바르지 않은 로그인 정보
+|`+ACCESS_DENIED+`
+|403
+|UNAUTHORIZED
+|해당 API를 사용하기 위해 토큰이 필요한 경우
+|`+CONFLICT+`
+|409
+|CONFLICT
+|중복된 리소스가 존재하는 경우 (회원가입시 아이디 중복 또는 중복 강의 신청)
+|`+UNPROCESSABLE_ENTITY+`
+|422
+|UNPROCESSABLE_ENTITY
+|서버 내부에서 요청을 처리할 수 없는 경우
+|`+INTERNAL_SERVER_ERROR+`
+|500
+|INTERNAL_SERVER_ERROR
+|서버 에러
+|===
+
+== 회원 관련 API
+
+=== 1. 회원 가입
+`POST /api/v1/auth/signup`
+
+==== 요청
+
+include::{snippets}/member-create-success/http-request.adoc[]
+===== Request fields
+include::{snippets}/member-create-success/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/member-create-success/http-response.adoc[]
+
+=== 2. 로그인
+`POST /api/v1/auth/login`
+
+==== 요청
+
+include::{snippets}/login-success/http-request.adoc[]
+===== Request fields
+include::{snippets}/login-success/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/login-success/http-response.adoc[]
+===== response fields
+include::{snippets}/login-success/response-fields.adoc[]
+
+== 강의 관련 API
+
+=== 1. 강의 개설
+`POST /api/v1/courses`
+NOTE: 권한: 강사 (ROLE_INSTRUCTOR)
+
+==== 요청
+include::{snippets}/courses-create-success/http-request.adoc[]
+
+===== Request Headers
+|===
+|Name|Description
+
+|`+Authorization+`
+|access token (ROLE_INSTRUCTOR)
+|`+Content-Type+`
+|application/json
+|`+Accept+`
+|application/json
+|===
+===== Request fields
+include::{snippets}/courses-create-success/request-fields.adoc[]
+
+==== 응답
+===== Response fields
+include::{snippets}/courses-create-success/http-response.adoc[]
+
+=== 2. 강의 목록 조회
+`GET /api/v1/courses`
+
+NOTE: 정렬 조건 +
+1. CREATED_AT_DESC(최신순) +
+2. REGISTERED_COUNT_DESC(신청자 많은순) +
+3. REGISTRATION_RATE_DESC(신청률 높은순)
+
+==== 요청
+
+include::{snippets}/courses-list-success/http-request.adoc[]
+
+===== Request Headers
+|===
+|Name|Description
+
+|`+Authorization+`
+|access token
+|`+Content-Type+`
+|application/json
+|`+Accept+`
+|application/json
+|===
+===== Request parameter
+include::{snippets}/courses-list-success/query-parameters.adoc[]
+
+==== 응답
+
+include::{snippets}/courses-create-success/http-response.adoc[]
+
+===== Response body
+include::{snippets}/courses-list-success/response-body.adoc[]
+===== Response fields
+include::{snippets}/courses-list-success/response-fields.adoc[]
+
+=== 3. 강의 신청
+`POST /api/v1/courses/register`
+
+NOTE: - 여러 강의를 동시 신청할 수 있음 +
+- 이미 신청한 강의일 경우 에러 반환
+
+==== 요청
+
+include::{snippets}/courses-register-success/http-request.adoc[]
+
+===== Request Headers
+|===
+|Name|Description
+
+|`+Authorization+`
+|access token
+|`+Content-Type+`
+|application/json
+|`+Accept+`
+|application/json
+|===
+===== Request fields
+include::{snippets}/courses-register-success/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/courses-register-success/http-response.adoc[]

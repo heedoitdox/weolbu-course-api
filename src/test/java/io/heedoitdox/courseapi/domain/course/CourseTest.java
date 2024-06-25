@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.heedoitdox.courseapi.exception.UnprocessableException;
+import io.heedoitdox.courseapi.support.BigDecimalUtil;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -51,12 +53,13 @@ class CourseTest {
       // given
       final int CAPACITY = 5;
       Course course = Course.create("test", CAPACITY, null);
+      BigDecimal expected = BigDecimalUtil.RoundToTwoDecimalPlace(new BigDecimal(1 / (double)course.getCapacity()));
 
       // when
       course.register();
 
       // then
-      assertThat(course.getRegisteredRate()).isEqualTo(1 / (double) course.getCapacity());
+      assertThat(course.getRegisteredRate()).isEqualTo(expected);
     }
   }
 }

@@ -52,6 +52,7 @@ class CourseServiceConcurrencyTest {
         .set("title", "너나위의 부동산 투자법")
         .set("capacity", 10)
         .set("registeredCount", 0)
+        .set("registeredRate", BigDecimal.ZERO)
         .set("price", new BigDecimal("452000"))
         .set("instructor", instructor)
         .set("version", 1L)

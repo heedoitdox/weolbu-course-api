@@ -15,7 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers("/h2-console/**");
+        .requestMatchers("/h2-console/**", "/docs/**");
   }
 
   @Bean

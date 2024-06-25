@@ -14,13 +14,26 @@ GET http://localhost:8080/api/v1/courses?orderConditions=REGISTRATION_RATE_DESC
 Content-Type: application/json
 Authorization: {{tokenType}} {{accessToken}}
 
+### 강의 신청
+POST http://localhost:8080/api/v1/courses/register
+Content-Type: application/json
+Authorization: {{tokenType}} {{accessToken}}
+
+{
+  "courseIds": [
+    1,
+    2,
+    3
+  ]
+}
+
 ### 로그인
 POST http://localhost:8080/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "student1@weolbu.com",
-  "password": "1234"
+  "email": "binzzang810@gmail.com",
+  "password": "gmltn810"
 }
 
 > {%
@@ -36,6 +49,6 @@ Content-Type: application/json
   "email": "binzzang810@gmail.com",
   "name": "윤영빈",
   "phone": "010-4560-9218",
-  "password": "1234",
+  "password": "gmltn810",
   "memberType": "INSTRUCTOR"
 }

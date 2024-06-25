@@ -9,8 +9,7 @@ import io.heedoitdox.courseapi.config.FixtureMonkeyUtil;
 import io.heedoitdox.courseapi.domain.course.Course;
 import io.heedoitdox.courseapi.domain.course.CourseRepository;
 import io.heedoitdox.courseapi.domain.member.Member;
-import io.heedoitdox.courseapi.exception.BadRequestException;
-import io.heedoitdox.courseapi.exception.UnprocessableException;
+import io.heedoitdox.courseapi.exception.ApiErrorException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +45,7 @@ class CourseServiceTest {
 
       // when
       // then
-      assertThrows(UnprocessableException.class,
+      assertThrows(ApiErrorException.class,
           () -> sut.register(List.of(1L, 2L, 3L), applicant));
     }
 
@@ -59,7 +58,7 @@ class CourseServiceTest {
 
       // when
       // then
-      assertThrows(BadRequestException.class,
+      assertThrows(ApiErrorException.class,
           () -> sut.register(List.of(1L, 2L, 3L), applicant));
     }
 

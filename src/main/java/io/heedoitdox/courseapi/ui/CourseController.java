@@ -2,11 +2,11 @@ package io.heedoitdox.courseapi.ui;
 
 import io.heedoitdox.courseapi.application.course.CourseListRequest;
 import io.heedoitdox.courseapi.application.course.CourseListResponse;
-import io.heedoitdox.courseapi.application.course.CourseSummary;
 import io.heedoitdox.courseapi.application.course.CourseRegisterRequest;
 import io.heedoitdox.courseapi.application.course.CourseService;
 import io.heedoitdox.courseapi.application.course.CreateCourseRequest;
 import io.heedoitdox.courseapi.domain.member.Member;
+import io.heedoitdox.courseapi.exception.UnprocessableException;
 import io.heedoitdox.courseapi.support.security.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class CourseController {
 
   @PostMapping("/register")
   public ResponseEntity<Void> register(@RequestBody CourseRegisterRequest request) {
-    Member member = SecurityUtil.getMember().orElseThrow(IllegalArgumentException::new);
+    Member member = SecurityUtil.getMember().orElseThrow(UnprocessableException::new);
     courseService.register(request.courseIds(), member);
 
     return ResponseEntity.ok().build();
