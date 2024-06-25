@@ -31,7 +31,7 @@ cd <project-name>
 ```bash
 ./gradlew bootRun
 ```
-5. 빠른 api 호출
+5. [빠른 api 호출](https://github.com/heedoitdox/weolbu-course-api/blob/main/src/http/api.http)
 ```bash
 intellij IDE 에서 /src/http/api.http 파일 오픈 후 호출 
 ```
