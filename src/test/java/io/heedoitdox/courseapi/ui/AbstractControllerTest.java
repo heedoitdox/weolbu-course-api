@@ -1,8 +1,8 @@
 package io.heedoitdox.courseapi.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.heedoitdox.courseapi.application.auth.UserServiceImpl;
-import io.heedoitdox.courseapi.config.SecurityConfig;
+import io.heedoitdox.courseapi.application.auth.UserService;
+import io.heedoitdox.courseapi.config.TestSecurityConfig;
 import io.heedoitdox.courseapi.support.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Import({SecurityConfig.class})
+@Import({TestSecurityConfig.class})
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
@@ -33,13 +31,7 @@ public abstract class AbstractControllerTest {
   private JwtService jwtService;
 
   @MockBean
-  private UserDetailsService userDetailsService;
-
-  @MockBean
-  private UserServiceImpl userServiceImpl;
-
-  @MockBean
-  private AuthenticationProvider authenticationProvider;
+  private UserService userService;
 
   @BeforeEach
   void setUp() {
